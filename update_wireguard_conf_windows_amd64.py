@@ -16,10 +16,6 @@ url = cf.get('Configs','url')
 wireguard_path = cf.get('Configs','wireguard_path')
 conf_path = cf.get('Configs','conf_path')
 
-# print(open('config.txt', mode='r', encoding='utf-8').readlines)
-# wireguard_path = 'C:\\Program Files\\WireGuard\\wireguard.exe'
-# conf_path = 'C:\\Users\\Administrator\\Desktop\\wireguard.conf'
-
 def ui(data):
     while True:
         print("\n<------------------------------------------------------------------------------------------------>")
