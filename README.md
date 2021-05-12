@@ -2,7 +2,7 @@
 一个自动处理联通免流的脚本。信息来源https://github.com/simo8102/chinaunicom-AutoSignMachine
 
 
-Windows使用方法：
+# Windows使用方法：
 
 1.安装wireguard。地址：https://download.wireguard.com/windows-client/
 
@@ -13,8 +13,7 @@ Windows使用方法：
 4.运行update_wireguard_conf_windows_amd64.py。根据实际需求开启或关闭免流
 
 
-
-获得管理员权限的方法：
+# 获得管理员权限的方法：
 
 1.右键update_wireguard_conf_windows_amd64.py 选择 发送到 桌面快捷方式。
 
@@ -27,9 +26,7 @@ Windows使用方法：
 5.运行快捷方式，会提醒获取管理员权限。选确定。然后无论执行哪个动作都不会受限了。
 
 
-
-
-移动端（iOS/Android）使用方法：
+# 移动端（iOS/Android）使用方法：
 
 1.安装对应系统的wireguard。地址：https://www.wireguard.com/install/
 
