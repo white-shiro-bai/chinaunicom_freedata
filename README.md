@@ -12,6 +12,23 @@ Windows使用方法：
 
 4.运行update_wireguard_conf_windows_amd64.py。根据实际需求开启或关闭免流
 
+
+
+获得管理员权限的方法：
+
+1.右键update_wireguard_conf_windows_amd64.py 选择 发送到 桌面快捷方式。
+
+2.右键桌面上的快捷方式，选择属性，把目标那一栏前面加上 “python ”<-注意这里有个空格
+
+3.点击高级，勾选 “已管理员身份运行”
+
+4.确定，确定，关闭快捷方式属性。
+
+5.运行快捷方式，会提醒获取管理员权限。选确定。然后无论执行哪个动作都不会受限了。
+
+
+
+
 移动端（iOS/Android）使用方法：
 
 1.安装对应系统的wireguard。地址：https://www.wireguard.com/install/
