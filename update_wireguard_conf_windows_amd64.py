@@ -138,4 +138,5 @@ def get_cmd():
 
 
 if __name__ == '__main__':
+    print('注意！配置文件在每日凌晨会更换。每天需要重新连接。')
     get_cmd()
