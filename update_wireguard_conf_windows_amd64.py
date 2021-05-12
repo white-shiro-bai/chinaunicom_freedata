@@ -6,12 +6,26 @@ import subprocess
 from prettytable import PrettyTable
 import configparser
 import os
+import qrcode
+
 
 cf = configparser.ConfigParser()
 cf.read(os.path.dirname(os.path.realpath(__file__))+"/config.ini",encoding='utf-8')
 url = cf.get('Configs','url')
 wireguard_path = cf.get('Configs','wireguard_path')
 conf_path = cf.get('Configs','conf_path')
+qrcode_file = cf.get('Configs','qrcode_file')
+
+def gen_qrcode(code):
+    qr = qrcode.QRCode(border=1,error_correction=qrcode.ERROR_CORRECT_H)
+    qr.add_data(code)
+    img = qr.make_image()#.convert('RGBA')
+    img_w, img_h = img.size
+    factor = 4
+    size_w, size_h = int(img_w / factor), int(img_h / factor)
+    qrfile = open(qrcode_file, mode='wb')
+    img.save(qrfile, format='jpeg')
+
 
 def ui(data):
     while True:
@@ -102,6 +116,7 @@ def getupdate():
     req = requests.get(url="https://raw.githubusercontent.com/simo8102/chinaunicom-AutoSignMachine/main/%E7%BA%BF%E8%B7%AF%E6%9B%B4%E6%96%B0.md",headers=headers)
     tofile = open(conf_path, mode='w', encoding='utf-8')
     print(req.text.split("```")[1],file=tofile)
+    return req.text.split("```")[1]
     
 
 
@@ -109,7 +124,7 @@ def get_stop():
     pass
 
 def get_cmd():
-    with_args = ui(data={"limit_func":True,"desc":"选择要执行的命令","type":"option","display_key":"func_id","func_key":"func_id","data":[{"func_id":1,"func_name":"更新信息并启用免流"},{"func_id":2,"func_name":"停用免流"},{"func_id":3,"func_name":"纯更新"},{"func_id":4,"func_name":"纯启用免流"}]})[0]
+    with_args = ui(data={"limit_func":True,"desc":"选择要执行的命令","type":"option","display_key":"func_id","func_key":"func_id","data":[{"func_id":1,"func_name":"更新信息并启用免流"},{"func_id":2,"func_name":"停用免流"},{"func_id":3,"func_name":"更新信息并展示二维码（移动端适用）"},{"func_id":4,"func_name":"纯启用免流"}]})[0]
     if with_args == '2':
         subprocess.run(wireguard_path + '  /uninstalltunnelservice wireguard')
     elif with_args == '4':
@@ -118,7 +133,8 @@ def get_cmd():
         getupdate()
         subprocess.run(wireguard_path + '  /installtunnelservice  "'+ conf_path + '"')
     elif with_args == '3':
-        getupdate()
+        gen_qrcode(code=getupdate())
+        os.system(qrcode_file)
 
 
 if __name__ == '__main__':
