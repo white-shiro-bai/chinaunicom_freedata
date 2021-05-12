@@ -3,6 +3,7 @@
 
 
 使用方法：
+
 1.安装wireguard。地址https://download.wireguard.com/windows-client/
 
 2.配置config.ini文件，调整为你实际的安装路径。如果没改过安装参数，则使用默认路径即可
