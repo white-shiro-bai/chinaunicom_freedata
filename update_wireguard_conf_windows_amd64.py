@@ -102,8 +102,6 @@ def getupdate():
     req = requests.get(url="https://raw.githubusercontent.com/simo8102/chinaunicom-AutoSignMachine/main/%E7%BA%BF%E8%B7%AF%E6%9B%B4%E6%96%B0.md",headers=headers)
     tofile = open(conf_path, mode='w', encoding='utf-8')
     print(req.text.split("```")[1],file=tofile)
-    # os.system(wireguard_path + '  /installtunnelservice  "'+ conf_path + ' "')
-    subprocess.run(wireguard_path + '  /installtunnelservice  "'+ conf_path + '"')
     
 
 
