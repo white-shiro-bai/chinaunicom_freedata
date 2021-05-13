@@ -15,9 +15,10 @@ url = cf.get('Configs','url')
 wireguard_path = cf.get('Configs','wireguard_path')
 conf_path = cf.get('Configs','conf_path')
 qrcode_file = cf.get('Configs','qrcode_file')
+url_page = cf.get('Configs','url_page')
 
 def gen_qrcode(code):
-    qr = qrcode.QRCode(border=1,error_correction=qrcode.ERROR_CORRECT_H)
+    qr = qrcode.QRCode(border=1,error_correction=qrcode.ERROR_CORRECT_L)
     qr.add_data(code)
     img = qr.make_image()#.convert('RGBA')
     img_w, img_h = img.size
@@ -113,12 +114,20 @@ def getupdate():
     headers = {
         'User-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15'
     }
-    req = requests.get(url="https://raw.githubusercontent.com/simo8102/chinaunicom-AutoSignMachine/main/%E7%BA%BF%E8%B7%AF%E6%9B%B4%E6%96%B0.md",headers=headers)
+    req = requests.get(url=url,headers=headers)
     tofile = open(conf_path, mode='w', encoding='utf-8')
     print(req.text.split("```")[1],file=tofile)
     return req.text.split("```")[1]
-    
 
+def getupdate_url():
+    headers = {
+        'User-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15'
+    }
+    req = requests.get(url=url_page,headers=headers)
+    tofile = open(conf_path, mode='w', encoding='utf-8')
+    keys =  req.text.split('<div class="snippet-clipboard-content position-relative"><pre><code>')[1].split('</code></pre><div class="zeroclipboard-container position-absolute right-0 top-0">')[0]
+    print(keys,file=tofile)
+    return keys
 
 def get_stop():
     pass
@@ -130,10 +139,10 @@ def get_cmd():
     elif with_args == '4':
         subprocess.run(wireguard_path + '  /installtunnelservice  "'+ conf_path + '"')
     elif with_args == '1':
-        getupdate()
+        getupdate_url()
         subprocess.run(wireguard_path + '  /installtunnelservice  "'+ conf_path + '"')
     elif with_args == '3':
-        gen_qrcode(code=getupdate())
+        gen_qrcode(code=getupdate_url())
         os.system(qrcode_file)
 
 
