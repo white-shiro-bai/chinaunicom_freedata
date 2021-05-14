@@ -16,6 +16,7 @@ wireguard_path = cf.get('Configs','wireguard_path')
 conf_path = cf.get('Configs','conf_path')
 qrcode_file = cf.get('Configs','qrcode_file')
 url_page = cf.get('Configs','url_page')
+url_ip = cf.get('Configs','url_ip')
 
 def gen_qrcode(code):
     qr = qrcode.QRCode(border=1,error_correction=qrcode.ERROR_CORRECT_L)
@@ -119,6 +120,16 @@ def getupdate():
     print(req.text.split("```")[1],file=tofile)
     return req.text.split("```")[1]
 
+def getupdateip():
+    headers = {
+        'User-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15'
+    }
+    req = requests.get(url=url_ip,headers=headers)
+    tofile = open(conf_path, mode='w', encoding='utf-8')
+    print(req.text,file=tofile)
+    return req.text
+
+
 def getupdate_url():
     headers = {
         'User-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15'
@@ -129,20 +140,26 @@ def getupdate_url():
     print(keys,file=tofile)
     return keys
 
-def get_stop():
-    pass
+def get_code(ipid=3):
+    if ipid == "1":
+        return getupdate()
+    elif ipid == "2":
+        return getupdate_url()
+    elif ipid == "3":
+        return getupdateip()
 
 def get_cmd():
+    ipid = ui(data={"limit_func":True,"desc":"选择要使用的密钥来源，每天凌晨3点更新。推荐使用3","type":"option","display_key":"func_id","func_key":"func_id","data":[{"func_id":1,"func_name":"raw.github（对网络环境有要求）"},{"func_id":2,"func_name":"github，大部分网络可以访问"},{"func_id":3,"func_name":"使用作者提供的ip，只要作者服务不关，就对网络没要求"}]})[0]
     with_args = ui(data={"limit_func":True,"desc":"选择要执行的命令","type":"option","display_key":"func_id","func_key":"func_id","data":[{"func_id":1,"func_name":"更新信息并启用免流"},{"func_id":2,"func_name":"停用免流"},{"func_id":3,"func_name":"更新信息并展示二维码（移动端适用）"},{"func_id":4,"func_name":"纯启用免流"}]})[0]
     if with_args == '2':
         subprocess.run(wireguard_path + '  /uninstalltunnelservice wireguard')
     elif with_args == '4':
         subprocess.run(wireguard_path + '  /installtunnelservice  "'+ conf_path + '"')
     elif with_args == '1':
-        getupdate_url()
+        get_code(ipid=ipid)
         subprocess.run(wireguard_path + '  /installtunnelservice  "'+ conf_path + '"')
     elif with_args == '3':
-        gen_qrcode(code=getupdate_url())
+        get_code(ipid=ipid)
         os.system(qrcode_file)
 
 
