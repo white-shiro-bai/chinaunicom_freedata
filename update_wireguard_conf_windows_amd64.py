@@ -149,16 +149,17 @@ def get_code(ipid=3):
         return getupdateip()
 
 def get_cmd():
-    ipid = ui(data={"limit_func":True,"desc":"选择要使用的密钥来源，每天凌晨3点更新。推荐使用3","type":"option","display_key":"func_id","func_key":"func_id","data":[{"func_id":1,"func_name":"raw.github（对网络环境有要求）"},{"func_id":2,"func_name":"github，大部分网络可以访问"},{"func_id":3,"func_name":"使用作者提供的ip，只要作者服务不关，就对网络没要求"}]})[0]
-    with_args = ui(data={"limit_func":True,"desc":"选择要执行的命令","type":"option","display_key":"func_id","func_key":"func_id","data":[{"func_id":1,"func_name":"更新信息并启用免流"},{"func_id":2,"func_name":"停用免流"},{"func_id":3,"func_name":"更新信息并展示二维码（移动端适用）"},{"func_id":4,"func_name":"纯启用免流"}]})[0]
+    with_args = ui(data={"limit_func":True,"desc":"选择要执行的命令","type":"option","display_key":"func_id","func_key":"func_id","data":[{"func_id":1,"func_name":"更新信息并启用免流"},{"func_id":2,"func_name":"停用免流"},{"func_id":3,"func_name":"更新信息并展示二维码（移动端适用）"},{"func_id":4,"func_name":"不更新信息纯启用免流"}]})[0]
     if with_args == '2':
         subprocess.run(wireguard_path + '  /uninstalltunnelservice wireguard')
     elif with_args == '4':
         subprocess.run(wireguard_path + '  /installtunnelservice  "'+ conf_path + '"')
     elif with_args == '1':
+        ipid = ui(data={"limit_func":True,"desc":"选择要使用的密钥来源，每天凌晨3点更新。推荐使用3","type":"option","display_key":"func_id","func_key":"func_id","data":[{"func_id":1,"func_name":"raw.github（对网络环境有要求）"},{"func_id":2,"func_name":"github，大部分网络可以访问"},{"func_id":3,"func_name":"使用作者提供的ip，只要作者服务不关，就对网络没要求"}]})[0]
         get_code(ipid=ipid)
         subprocess.run(wireguard_path + '  /installtunnelservice  "'+ conf_path + '"')
     elif with_args == '3':
+        ipid = ui(data={"limit_func":True,"desc":"选择要使用的密钥来源，每天凌晨3点更新。推荐使用3","type":"option","display_key":"func_id","func_key":"func_id","data":[{"func_id":1,"func_name":"raw.github（对网络环境有要求）"},{"func_id":2,"func_name":"github，大部分网络可以访问"},{"func_id":3,"func_name":"使用作者提供的ip，只要作者服务不关，就对网络没要求"}]})[0]
         get_code(ipid=ipid)
         os.system(qrcode_file)
 
