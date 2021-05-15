@@ -160,7 +160,7 @@ def get_cmd():
         subprocess.run(wireguard_path + '  /installtunnelservice  "'+ conf_path + '"')
     elif with_args == '3':
         ipid = ui(data={"limit_func":True,"desc":"选择要使用的密钥来源，每天凌晨3点更新。推荐使用3","type":"option","display_key":"func_id","func_key":"func_id","data":[{"func_id":1,"func_name":"raw.github（对网络环境有要求）"},{"func_id":2,"func_name":"github，大部分网络可以访问"},{"func_id":3,"func_name":"使用作者提供的ip，只要作者服务不关，就对网络没要求"}]})[0]
-        get_code(ipid=ipid)
+        gen_qrcode(code=get_code(ipid=ipid))
         os.system(qrcode_file)
 
 
